@@ -18,7 +18,7 @@ db_name = "kaspersky_db"
 
 encoded_password = quote_plus(password) if any(c in password for c in ['@', ':', '/']) else password
 
-DATABASE_URL = f"postgresql://{username}:{encoded_password}@localhost:5432/{db_name}"
+DATABASE_URL = f"postgresql://{username}:{password}@postgres:5432/{db_name}"
 
 engine = create_engine(DATABASE_URL)
 try:
@@ -113,7 +113,7 @@ def read_items(request: Request,db: Session = Depends(get_db),sort: Optional[str
 
     items = [dict(row) for row in result.mappings()]
     columns = list(result.keys())
-    mass_columns = [{"title":column,"dataIndex":column,"key":column,"sorter":"true", "filterSearch": "true","sorter":{"multiple": 3,}} for column in columns]
+    mass_columns = [{"title":column,"dataIndex":column,"key":column,"sorter":"true", "filterSearch": "true","sorter":{"multiple": 3, "onFilter": "(value, record) => record.name.startsWith(value as string)",}} for column in columns]
 
     return JSONResponse(
         content={
