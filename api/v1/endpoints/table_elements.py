@@ -39,7 +39,9 @@ def get_db():
     finally:
         db.close()
 
-
+@router.options("https://potential-funicular-6565r9wj67ghxv76-8000.app.github.dev/items/gg?page=1")
+async def options_handler():
+    return {"message": "OK"}
 @router.get("/gg")
 def read_items(request: Request,db: Session = Depends(get_db),sort: Optional[str] = None,search: str = None):
     query_params = request.query_params

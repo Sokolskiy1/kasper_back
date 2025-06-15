@@ -23,6 +23,7 @@ app.add_middleware(
     allow_origins=["*"],  # Или конкретные домены
     allow_methods=["*"],  # Или ["GET", "POST"]
     allow_headers=["*"],
+
 )
 
 app.include_router(items_router, prefix="/items")
